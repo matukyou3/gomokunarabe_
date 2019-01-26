@@ -121,7 +121,9 @@ class game
 
         bool check(int raw,int col)
         {
-            return bd.get_goishi(raw,col)==0;
+            if((raw>0 && raw <14) && (col >0 && col <14))
+                return bd.get_goishi(raw,col)==0;
+            return false;
         }
        
         void put_goishi(int player,int raw,int col)
@@ -156,7 +158,7 @@ int main()
     int player_num;
     int raw,col;
     game gm;
-
+    std::cin.exceptions(std::ios::failbit);
     std::string player1_name;
     std::string player2_name;
     std::cout<<"player1 Name is :";
@@ -181,13 +183,26 @@ int main()
         
         while(1)
         {
-            std::cin>>raw>>col;
-            if(gm.check(raw,col))
+            try
             {
-                gm.put_goishi(player_num,raw,col);
-                break;
-            }
+                std::cin>>raw>>col;
+            
+                
+                if(gm.check(raw,col))
+                {
+                    gm.put_goishi(player_num,raw,col);
+                    break;
+                }
+            
             std::cout<<"failed \n Put again"<<std::endl;
+            }
+            catch(...)
+            {
+                std::cout<<"Input Number"<<std::endl;
+                std::cin.clear();
+                std::cin.seekg(0);
+                continue;
+            }
         }
 
         gm.display();
